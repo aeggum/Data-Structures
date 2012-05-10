@@ -7,5 +7,6 @@ Having them on github will make it easier for me to remember them from time to t
 
 Beyond that, there are a few goals for the repository, I suppose. 
 
-Try to optimize any of the structures that are added.  This would be ongoing.
-Have a main() method that uses each of the structures or algorithms in one way or another.  Maybe comparing the data structure or algorithm with the 'best' (ie. built-in algorithms).
+> + Try to optimize any of the structures that are added.  This would be ongoing.
+> 
+> + Have a main() method that uses each of the structures or algorithms in one way or another.  Maybe comparing the data structure or algorithm with the 'best' (ie. built-in algorithms).

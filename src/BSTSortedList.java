@@ -27,7 +27,7 @@ import java.util.ArrayList;
  *
  * @param <K>
  */
-public class BSTSortedList<K extends Comparable<K>> implements SortedListADT<K> {
+public class BSTSortedList<K extends Comparable<K>>  {
 	private BSTnode<K> root;  // the root node
 	private int numItems;  // the number of items in the sorted list
 	List<K> list = new ArrayList<K>(); // the list of items
@@ -54,7 +54,9 @@ public class BSTSortedList<K extends Comparable<K>> implements SortedListADT<K> 
 	public void insert(K key) throws DuplicateException {
 		if (lookup(key) != null)
 			throw new DuplicateException();
-		if(key instanceof Address){
+		
+		//TODO: ...
+		if(key instanceof Object){
 			numItems ++;
 			this.root = insert(this.root, key);
 		}

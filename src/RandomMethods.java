@@ -5,8 +5,8 @@ public class RandomMethods {
 		print(reverseWords(word));
 		print(reverse(word));
 	}
-	
-	
+
+
 	/**
 	 * Returns true if an array has a duplicate, false otherwise.
 	 * Does not count duplicates or anything, just true or false.
@@ -21,10 +21,10 @@ public class RandomMethods {
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Reverses each of the words in a String, separated by whitespace.
 	 * So (abc def becomes cba fed).  Returns null if passed null, string is 
@@ -35,24 +35,24 @@ public class RandomMethods {
 	public static String reverseWords(String str) {
 		if (str == null) return null;
 		if (str.equals("") || str.charAt(0) == ' ') return null;
-		
+
 		String word = "";
 		while (str.contains(" ")) {
 			int index = str.indexOf(" ");
 			for (int i = index - 1; i >= 0; i--) 
 				word += str.charAt(i);
-			
+
 			word += str.charAt(index);
 			str = str.substring(index + 1);
 		}
-		
+
 		for (int i = str.length() - 1; i >= 0; i--) 
 			word += str.charAt(i);
-		
+
 		return word;
 	}
-	
-	
+
+
 	/**
 	 * Reverse the string passed in. 
 	 * @param str String you want reversed
@@ -62,10 +62,10 @@ public class RandomMethods {
 		String word = ""; 
 		for (int i = str.length() - 1; i >= 0; i--) 
 			word += str.charAt(i);
-		
+
 		return word;
 	}
-	
+
 	/**
 	 * Calls System.out.println() on whatever is passed in. 
 	 * @param toPrint
@@ -74,34 +74,3 @@ public class RandomMethods {
 		System.out.println(toPrint.toString());
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/

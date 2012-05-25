@@ -1,20 +1,46 @@
 
+/**
+ * This is a class that sorts arrays of Strings using the Radix sort method. 
+ * Only Strings are supported.  Found this in a public library, a long time ago. 
+ */
 public class Radix {
 	private static final int R = 256;					//ASCII alphabet size
-	private static final int CUTOFF = 15;				//cutoff to insertion sort
+	private static final int CUTOFF = 1;				//cutoff to insertion sort
 
+	/**
+	 * Takes in an array of Strings and sorts it. 
+	 * @param a An array of Strings
+	 */
 	public static void sort(String[] a) {
 		String[] aux = new String[a.length];
 		sort(a, 0, a.length - 1, 0, aux);
 	}
 
-	private static int charAt(String str, int d) {
-		assert d >= 0 && d <= str.length();
-		if (d == str.length()) return -1;
-		return str.charAt(d);
+	/**
+	 * Slightly more powerful form of charAt().  Rather than just using String's 
+	 * charAt(), this method extends that by asserting that the index is valid.  
+	 * Returns -1 if the integer passed is too large. 
+	 * 
+	 * Returns an integer, the integer value of the character at the location. 
+	 * @param str The string the character is in. 
+	 * @param index The index of the character into the String
+	 * @return
+	 */
+	private static char charAt(String str, int index) {
+		//assert index >= 0 && index <= str.length();
+		//if (index == str.length()) return null;
+		return str.charAt(index);
 	}
 
 
+	/**
+	 * Doest radix sort until the cutoff, at which point it does radix sort
+	 * @param a
+	 * @param low
+	 * @param high
+	 * @param d
+	 * @param aux
+	 */
 	private static void sort(String[] a, int low, int high, int d, String[] aux) {
 		if (high <= low + CUTOFF) {
 			insertion(a, low, high, d);

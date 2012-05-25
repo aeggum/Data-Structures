@@ -1,0 +1,596 @@
+//HERE I'M GOING TO BE PUTTING IN OLD FILES OR METHODS THAT I DON'T WANT TO KEEP A HOLD OF, in the class it was originally in.
+
+/**
+	 * This function sorts the ArrayLists using the most ineffective, but simple
+	 * BubbleSort algorithm.  The algorithm goes through the list checking, one
+	 * index at a time to see if any two elements should be swapped.  It completes
+	 * only when a full iteration through the list yielded no swaps. <p/>
+	 * Note: if the ARRSIZE in Driver is too large, this function doesn't have a chance of completing.  Too slow.
+	 * There is nothing passed in and nothing is returned.  The run time is O(n^2). <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 was <i>190</i> seconds.</b>
+	 */
+	public void bubbleSort() {
+		this.resetArrays();
+
+		boolean swapped = true;
+		long startTime = System.currentTimeMillis();
+		long endTime;
+		//Continue on as long as there is a swap at any time (ints)
+		while (swapped) {
+			swapped = false;
+
+			//Loop through each element in the list, swapping if a swap is necessary.
+			for (int i = 1; i < this.intList.size(); i++) {
+				if (this.intList.get(i-1) > this.intList.get(i)) {
+					int newint = this.intList.get(i-1);
+					//effectively does a swap
+					this.intList.set(i-1, this.intList.get(i));
+					this.intList.set(i, newint);
+					swapped = true;
+				}
+			}
+		}    
+
+		//Need to do the algorithm for Doubles as well now
+		swapped = true;
+		while (swapped) {
+			swapped = false;
+
+			//Loop through each element in the list, swapping if a swap is necessary
+			for (int i = 1; i < this.doubleList.size(); i++) {
+				if (this.doubleList.get(i-1) > this.doubleList.get(i)) {
+					double newdouble = this.doubleList.get(i-1);
+					//effectively does a swap
+					this.doubleList.set(i-1, this.doubleList.get(i));
+					this.doubleList.set(i, newdouble);
+					swapped = true;
+				}
+			}
+		}
+
+		//Can check, and then do the algorithm for Strings as well
+		if (this.strList != null) {
+			swapped = true;
+			while (swapped) {
+				swapped = false;
+				//Loop through each element in the list, swapping if a swap between two elements is necessary
+				for (int i = 1; i < this.strList.size(); i++) {
+					if (this.strList.get(i-1).compareToIgnoreCase(this.strList.get(i)) > 0) {
+						String newStr = this.strList.get(i - 1);
+						//now do the swap
+						this.strList.set(i - 1, this.strList.get(i));
+						this.strList.set(i, newStr);
+						swapped = true;
+					}
+				}
+			}
+		}        
+
+		endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("BubbleSort took " + duration/1000.0 + " seconds");
+	}
+	
+	
+	
+	/**
+	 * Sorts the arrays with an optimized version of bubbleSort.  Here, it
+	 * uses the fact after N passes, the last element in the list will be
+	 * sorted, and so on, moving down through the list.  This results in anywhere
+	 * from 10 to 50% improvement over the basic bubbleSort algorithm. <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 was <i>114</i> seconds.</b>
+	 */
+	public void optimizedBubbleSort() {
+		this.resetArrays();
+
+		int intSize = this.intList.size();
+		int doubSize = this.doubleList.size();
+		long startTime = System.currentTimeMillis();
+
+		//Do the optimized BubbleSort for Integers
+		do {
+			int newN = 0;
+			for (int i = 1; i < intSize; i++) {
+				//follows the same principle as bubbleSort; if two elements are
+				//out of order it will swap them; difference is with the newN
+				if (this.intList.get(i-1) > this.intList.get(i)) {
+					int bigElement = this.intList.get(i-1);
+					this.intList.set(i-1, this.intList.get(i));
+					this.intList.set(i, bigElement);
+					newN = i;
+				}
+			}
+			intSize = newN;
+		} while (intSize > 0);
+
+		//Do the optimized BubbleSort for Doubles
+		do {
+			int newN = 0;
+			for (int i = 1; i < doubSize; i++) {
+				//follows the same principle as bubbleSort; if two elements are
+				//out of order it will swap them; difference is with the newN
+				if (this.doubleList.get(i-1) > this.doubleList.get(i)) {
+					double bigElement = this.doubleList.get(i-1);
+					this.doubleList.set(i-1, this.doubleList.get(i));
+					this.doubleList.set(i, bigElement);
+					newN = i;
+				}
+			}
+			doubSize = newN;
+		} while (doubSize > 0);
+
+		//Check, and then if check passes, do the optimized sort for Strings
+		if (this.strList != null) {
+			int strSize = this.strList.size();
+			do {
+				int newN = 0;
+				for (int i = 1; i < strSize; i++) {
+					//follows same principle as bubble sort.
+					if (this.strList.get(i-1).compareToIgnoreCase(this.strList.get(i)) > 0) {
+						String newStr = this.strList.get(i - 1);
+						this.strList.set(i-1, this.strList.get(i));
+						this.strList.set(i, newStr);
+						newN = i;
+					}
+				}
+				strSize = newN;
+			} while (strSize > 0);
+		}
+
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("Optimized Bubble Sort took " + duration/1000.0 + " seconds");
+	}
+	
+	
+	/**
+	 * Runs selection sort on the ArrayLists.  Selection Sort is one of the simplest
+	 * but a slow O(n^2) runtime sorting algorithm.  It passes through the list, each
+	 * time looking for the smallest thing in the list and putting it at the front.  Each
+	 * pass it looks at one less spot, but it still is an O(N^2) algorithm.  <p/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 was <i>26</i> seconds.</b> <br/>
+	 * The way the ArrayLists are sorted to begin with work very well with this sort because
+	 * it reduces the number of swaps required.  Much better than bubble sort regardless.
+	 * This function can run in 273 seconds with a list of 500 elements; bubblesort cannot run that at all.
+	 */
+	public void selectionSort() {
+		this.resetArrays();
+		long startTime = System.currentTimeMillis();
+
+		//do the selectionSort on Integers
+		int min;
+		int minIndex = 0;
+		for (int startPos = 0; startPos < this.intList.size(); startPos++) {
+			min = this.intList.get(startPos);
+			minIndex = startPos;
+
+			for (int i = startPos + 1; i < this.intList.size(); i++) {
+				if (this.intList.get(i) < min) {
+					min = this.intList.get(i);
+					minIndex = i;
+				}
+			}
+
+			if (min != this.intList.get(startPos)) {
+				this.intList.set(minIndex, this.intList.get(startPos));
+				this.intList.set(startPos, min);
+			}
+		}
+
+		//do the selection sort on Doubles
+		double dMin;
+		minIndex = 0;
+		for (int startPos = 0; startPos < this.doubleList.size(); startPos++) {
+			dMin = this.doubleList.get(startPos);
+			minIndex = startPos;
+
+			for (int i = startPos + 1; i < this.doubleList.size(); i++) {
+				if (this.doubleList.get(i) < dMin) {
+					dMin = this.doubleList.get(i);
+					minIndex = i;
+				}
+			}
+
+			if (dMin != this.doubleList.get(startPos)) {
+				this.doubleList.set(minIndex, this.doubleList.get(startPos));
+				this.doubleList.set(startPos, dMin);
+			}
+		}
+
+		//Check, and if passes, do SSort on Strings as well, lexicographically
+		if (this.strList != null) {
+			String sMin;
+			minIndex = 0;
+			for (int startPos = 0; startPos < this.strList.size(); startPos++) {
+				sMin = this.strList.get(startPos);
+				minIndex = startPos;
+
+				for (int i = startPos + 1; i < this.strList.size(); i++) {
+					if (this.strList.get(i).compareToIgnoreCase(sMin) < 0) {
+						sMin = this.strList.get(i);
+						minIndex = i;
+					}
+				}
+
+				if (sMin.compareToIgnoreCase(this.strList.get(startPos)) != 0) {
+					this.strList.set(minIndex, this.strList.get(startPos));
+					this.strList.set(startPos, sMin);
+				}
+			}
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("Selection Sort took " + duration/1000.0 + " seconds");
+	}
+	
+	
+	
+	
+	
+		/**
+	 * Runs the insertion sort algorithm on the <tt>ArrayList</tt>s.  Insertion Sort
+	 * is generally faster than the other simple sorting methods, and is often the one
+	 * chosen out of Bubble, Selection, or Insertion because it is the fastest.  It is
+	 * highly dependent on the dataset you are sorting. Already mostly-sorted data is done quickly.
+	 * It is also very easy to quickly swap from ascending sort to a descending sort with
+	 * this implementation of insertion sort.
+	 * <p/>
+	 *
+	 * Took <b>44</b> seconds to run with a size of 250, on my MacBook Pro.
+	 * The same dataset took <b>65</b> seconds with Selection Sort.
+	 *
+	 * <p/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 is <i>6.457</i> seconds.</b> <br/>
+	 */
+	public void insertionSort() {
+		this.resetArrays();
+		long startTime = System.currentTimeMillis();
+
+		//Loop through the entire list, one full time (ints)
+		for (int i = 1; i < this.intList.size() - 1; i++) {
+			int num = this.intList.get(i);
+			int j = i - 1;
+
+			/*
+			 * Only want to keep looping if the value we want to insert (num) is
+			 * less than the value at the moving index.  Inside the loop, simply set
+			 * the 'old' index to the value of the current index, and decrement j.
+			 */
+			while (j >= 0 && this.intList.get(j) > num) {
+				this.intList.set(j + 1, this.intList.get(j));
+				j--;
+			}
+
+			//now set the value to the index it belongs in
+			this.intList.set(j + 1, num);
+		}
+
+		//Loop through the entire list, one full time (Doubles)
+		for (int i = 1; i < this.doubleList.size() - 1; i++) {
+			double num = this.doubleList.get(i);
+			int j = i - 1;        //j will hold the place we'll be inserting the element
+
+			/*
+			 * Only want to keep looping if the value we want to insert (num) is
+			 * less that the value at the moving index.  Inside the loop, simply set
+			 * the 'old' index to the value of the current index, and decrement j.
+			 */
+			while (j >= 0 && this.doubleList.get(j) > num) {
+				this.doubleList.set(j + 1, this.doubleList.get(j));
+				j--;
+			}
+
+			//now want to set the value to the index it belongs in
+			this.doubleList.set(j + 1, num);
+		}
+
+		if (this.strList != null) {
+			//Loop through the entire list one full time for Strings
+			for (int i = 1; i < this.strList.size() - 1; i++) {
+				String str = this.strList.get(i);
+				int j = i - 1;
+
+				/*
+				 * Only want to keep looping if the value we want to insert (str) is
+				 * less than the value at the moving index.  Inside the loop, simply set
+				 * the 'old' index to the value of the current index, and decrement j.
+				 */
+				while (j >= 0 && this.strList.get(j).compareTo(str) > 0) {
+					this.strList.set(j + 1, this.strList.get(j));
+					j--;    
+				}
+
+				//now want to set the value to the index it belongs to
+				this.strList.set(j + 1, str);
+			}
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("Insertion Sort took " + duration/1000.0 + " seconds");
+
+	}
+	
+	
+	
+	/**
+	 * Runs the combsort algorithm.  Comb sort improves on bubble sort by asserting
+	 * that there may be a gap between elements in arrays. It shrinks the gap after
+	 * each 'comb' through the dataset by a set value. For more information,
+	 * check out the wikipedia page <a href="http://en.wikipedia.org/wiki/Comb_sort">here.</a> <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 was <i>0.091</i> seconds.</b> <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 2000 was <i>15.643</i> seconds. </b> <br/>
+	 * These results are remarkably fast compared to the other sorts done to this point.
+	 */
+	public void combSort() {
+		this.resetArrays();
+		long startTime = System.currentTimeMillis();
+		double shrinkFactor = 1.247330950103979;	//As specified in the wikipedia page
+
+		int gap = this.intList.size();
+		boolean swapped = false;
+		//Loop runs until the gap is down to 1, and a swap has occurred
+		while (gap != 1 || swapped == false) {
+			gap /= shrinkFactor;
+			if (gap < 1)
+				gap = 1; 	//just to simplify, keep the gap at 1
+
+			int i = 0;
+			swapped = false;
+
+			//a single 'comb' over the input list
+			while (i + gap < this.intList.size()) {
+				if (this.intList.get(i) > this.intList.get(i + gap)) {
+
+					//perform a swap
+					int temp = this.intList.get(i);
+					this.intList.set(i, this.intList.get(i + gap));
+					this.intList.set(i + gap, temp);
+					swapped = true;
+				}
+				i++;        
+			}
+		}
+
+		//Run the same algorithm for Doubles
+		gap = this.doubleList.size();
+		swapped = false;
+		while (gap != 1 || swapped == false) {
+			gap /= shrinkFactor;
+			if (gap < 1)
+				gap = 1;
+
+			int i = 0;
+			swapped = false;
+
+			//a single 'comb' over the input list
+			while (i + gap < this.doubleList.size()) {
+				if (this.doubleList.get(i) > this.doubleList.get(i + gap)) {
+					//perform a swap
+					double temp = this.doubleList.get(i);
+					this.doubleList.set(i, this.doubleList.get(i + gap));
+					this.doubleList.set(i + gap, temp);
+					swapped = true;    
+				}
+				i++;
+			}
+		}
+
+		//Check if the strList is null, and if not, run the same algorithm on it
+		if (this.strList != null) {
+			gap = this.strList.size();
+			swapped = false;
+			while (gap != 1 || swapped == false) {
+				gap /= shrinkFactor;
+				if (gap < 1)
+					gap = 1;
+
+				int i = 0;
+				swapped = false;
+
+				//a single 'comb' over the input list
+				while (i + gap < this.strList.size()) {
+					if (this.strList.get(i).compareToIgnoreCase(this.strList.get(i + gap)) > 0) {
+						//perform a swap
+						String temp = this.strList.get(i);
+						this.strList.set(i, this.strList.get(i + gap));
+						this.strList.set(i + gap, temp);
+						swapped = true;
+					}
+					i++;
+				}
+			}
+		}
+		
+		//Now find out how long the algorithm took and report back to it.
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("Comb Sort took " + duration/1000.0 + " seconds.");
+	}
+	
+	
+	
+	/**
+	 * A Heap Sort algorithm that is implemented using Java's PriorityQueue.
+	 * This method is even faster than Comb Sort and is supposedly comparable with
+	 * QuickSort and MergeSort, and we will find out in the coming days.  <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 250 was <i>0.083</i> seconds.</b> <br/>
+	 * <b>The runtime of this method with an ARRSIZE of 2000 was <i>10.187</i> seconds. </b> <br/>
+	 * There is a chance that I will be making a second version of this sort with
+	 * my own version of a heap in the future.  Depends on how much I get done 
+	 * QuickSort and MergeSort.  It would undoubtedly be slower than this.
+	 */
+	public void heapSort() {
+		this.resetArrays();
+		long startTime = System.currentTimeMillis();
+
+		PriorityQueue<Integer> intPQ = new PriorityQueue<Integer>(this.intList);
+		PriorityQueue<Double> doubPQ = new PriorityQueue<Double>(this.doubleList);
+
+		//Deal with the Strings only if strList has been set
+		if (this.strList != null) {
+			PriorityQueue<String> strPQ = new PriorityQueue<String>(this.strList);
+			int i = 0;
+			while (!strPQ.isEmpty()) {
+				this.strList.set(i, strPQ.remove());
+				i++;
+			}
+		}
+
+		int i = 0;
+		while (!intPQ.isEmpty()) {
+			this.intList.set(i, intPQ.remove());
+			i++;
+		}
+
+		i = 0;
+		while (!doubPQ.isEmpty()) {
+			this.doubleList.set(i, doubPQ.remove());
+			i++;
+		}
+
+
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		print("Heap Sort took " + duration/1000.0 + " seconds");
+	}
+	
+	
+	
+	
+	/**
+	 * Prints out each ArrayList in a simple, easy to follow fashion that shouldn't
+	 * make it overly difficult to tell whether the sorting took place or not.  The
+	 * unsorted lists are printed out first, followed by the sorted array.
+	 * <i>This class overrides the default toString() and uses Java's StringBuilder object</i>
+	 * @bug With a large data set (ie. 250), printing out ruins the other output from the program
+	 */
+	/*public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("The unsorted arrays: \n");
+
+		for (int i: this.unsortedIntList)
+			sb.append(i + ", ");
+		sb.deleteCharAt(sb.length() - 2);
+
+		sb.append("\n");
+		for (double d: this.unsortedDoubleList)
+			sb.append(d + ", ");
+		sb.deleteCharAt(sb.length() - 2);
+
+		sb.append("\n\nThe sorted arrays: \n");
+
+		for (int i: this.intList)
+			sb.append(i + ", ");
+								sb.deleteCharAt(sb.length() - 2);
+
+								sb.append("\n");
+								for (double d: this.doubleList)
+									sb.append(d + ", ");
+										sb.deleteCharAt(sb.length() - 2);
+
+										return sb.toString();
+	}*/
+	
+	
+	
+	
+	/**
+	 * A sorting algorithm that is supposed to improve on insertion and bubble sort
+	 * but currently is not working.
+	 */
+	public void shellSort() {
+		this.resetArrays();
+		long startTime = System.currentTimeMillis();
+		int[] gaps = {701, 301, 132, 57, 23, 10, 4, 1};
+		//int[] gaps = {1048575, 524287, 262143, 131071, 65535, 32767, 16383, 8191, 4095, 2047, 1023, 511, 255, 127, 63, 31, 15, 7, 3, 1, 0};
+
+		int j = -Integer.MAX_VALUE;
+		for (int gap = 0; gap < gaps.length; gap++) {
+			//Do an insertion sort for each gap size
+			for (int i = gaps[gap]; i < this.intList.size(); i++) {
+
+				//if (gaps[gap] > this.intList.size()) break;
+				int temp = this.intList.get(i);
+				for (j = i; j >= gap && this.intList.get(j - gap) > temp; j -= gap) {
+					this.intList.set(j, this.intList.get(j - gap));
+				}
+				this.intList.set(j, temp);
+			}
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		System.out.println("Shell Sort took " + duration/1000.0 + " seconds");
+	}
+	
+	
+	
+	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Comparable[] reMerge(Comparable[] left, Comparable[] right) {
+		Comparable[] result = new Comparable[left.length + right.length];
+		int lc = left.length, rc = right.length;
+		int i = 0, j = 0;
+		while (lc > 0 || rc > 0) {
+			if (lc > 0 && rc > 0) {
+				if (left[i].compareTo(right[j]) <= 0) {
+					result[i+j] = left[i];
+					i++;
+					lc--;
+				}
+				else {
+					result[i+j] = right[j];
+					j++;
+					rc--;
+				}
+			}
+			else if (lc > 0) {
+				result[i+j] = left[i];
+				lc--;
+				i++;
+			}
+			else if (rc > 0) {
+				result[i+j] = right[j];
+				rc--;
+				j++;
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
+	private Comparable[] runMerge(Comparable[] sorted) {
+		if (sorted.length <= 1) 
+			return sorted;
+		//else split into sublists
+		Comparable[] left = new Comparable[sorted.length/2 + 1], right = new Comparable[sorted.length/2 + 1];
+		int middle = sorted.length/2;
+		for (int i = 0; i < middle; i++) 
+			left[i] = sorted[i];
+		for (int i = middle, j = 0; i < sorted.length; i++, j++) 
+			right[j] = sorted[i];
+		
+		//recursively call to split each sublist down to a size of 1
+		left = runMerge(left);
+		right = runMerge(right);
+		
+		//return the merged sublists
+		return reMerge(left, right);
+	}
+	
+	
+	
+	@SuppressWarnings("rawtypes")
+	public void merge(Comparable[] toSort) {
+		Comparable[] sorted = toSort.clone();
+		sorted = runMerge(sorted);
+	}
+	

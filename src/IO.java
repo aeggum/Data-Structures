@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-
+/**
+ * This class has various IO-related things that are used for the Driver
+ * class.  
+ * @author eggum
+ *
+ */
 public class IO {
 	/**
 	 * Loads the File given from the fileName and returns a 2-dimensional
@@ -23,8 +28,7 @@ public class IO {
 		if (fileName == null) return null;
 		File file = new File(fileName);
 		String[][] fileInput = new String[ARRSIZE][ARRSIZE];
-
-		//Need to keep these in try-catch, as they risk throwing an IOException
+		
 		try {
 			FileReader file_reader = new FileReader(file);
 			BufferedReader buf_reader = new BufferedReader(file_reader);
@@ -38,6 +42,7 @@ public class IO {
 			file_reader.close();
 		} catch (IOException ioe) {
 			System.err.println(ioe.getMessage());
+			System.exit(-1);
 		}
 
 		return fileInput;
@@ -250,6 +255,20 @@ public class IO {
 			}
 		}
 		return doubles;
+	}
+	
+	
+	public static String[] toSingleArr(String[][] strArray) {
+		String[] strs = new String[strArray.length * strArray[0].length];
+		
+		for (int row = 0; row < strArray.length; row++) {
+			for (int col = 0; col < strArray[0].length; col++) {
+				String str = strArray[row][col];
+				strs[row+col] = str;
+			}
+		}
+		
+		return strs;
 	}
 
 

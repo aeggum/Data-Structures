@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 public class Driver {
-	static int ARRSIZE = 300;
+	static int ARRSIZE = 160;
 	public static void main(String[] args) {
 		sorts();
 		
@@ -29,15 +29,17 @@ public class Driver {
 		ArrayList<Integer> ints = IO.stringToIntList(arr);
 		Integer[] intArray = IO.stringToIntArray(arr);
 
-
 		//load the file of doubles, and fill up the ArrayList of doubles
 		arr = IO.loadFile(IO.writeFile(0.0, ARRSIZE), ARRSIZE);
 		ArrayList<Double> doubles = IO.stringToDoubleList(arr);
 		Double[] doubleArray = IO.stringToDoubleArray(arr);
-
+		
+		arr = IO.loadFile("strings.txt", ARRSIZE);
+		String[] strArray = IO.toSingleArr(arr);
+		
 		//Create an instance of the object I will be using for sorting.
 		Sorts sort = new Sorts(ints, doubles, null, ARRSIZE);
-		sort.doSorts(intArray, doubleArray);
+		sort.doSorts(intArray, doubleArray, strArray);
 	}
 
 	

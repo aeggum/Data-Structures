@@ -7,8 +7,6 @@ public class Sorts {
 	private final ArrayList<Integer> unsortedIntList;
 	private ArrayList<Double> doubleList;
 	private final ArrayList<Double> unsortedDoubleList;
-	private ArrayList<String> strList;
-	private final ArrayList<String> unsortedStrList;
 	private final int ARRSIZE;
 
 
@@ -23,7 +21,6 @@ public class Sorts {
 	public Sorts(ArrayList<Integer> ints, ArrayList<Double> doubs, ArrayList<String> strs, int arrsize) {
 		this.unsortedIntList = ints;
 		this.unsortedDoubleList = doubs;
-		this.unsortedStrList = null;
 
 		this.intList = new ArrayList<Integer>();
 		this.doubleList = new ArrayList<Double>();
@@ -47,18 +44,17 @@ public class Sorts {
 
 		for (double d: doubs)
 			this.doubleList.add(d);
-
-		this.strList = null;
 	}
 
 	
-	public void doSorts(Integer[] intArray, Double[] doubleArray) {
+	public void doSorts(Integer[] intArray, Double[] doubleArray, String[] strArray) {
 		long startTime, endTime, duration;
 
 		if (ARRSIZE <= 200) {
 			startTime = System.currentTimeMillis();
 			this.bubble(intArray);
 			this.bubble(doubleArray);
+			this.bubble(strArray);
 			//sort.newBubble(stringArray);	//TODO:
 			endTime = System.currentTimeMillis();
 			duration = endTime - startTime;
@@ -67,15 +63,17 @@ public class Sorts {
 			startTime = System.currentTimeMillis();
 			this.optimizedBubble(intArray);
 			this.optimizedBubble(doubleArray);
+			this.optimizedBubble(strArray);
 			endTime = System.currentTimeMillis();
 			duration = endTime - startTime;
-			printStats("opt_bubble", duration);		
+			printStats("obubble", duration);		
 		}
 
 		if (ARRSIZE <= 250) {
 			startTime = System.currentTimeMillis();
 			this.selection(intArray);
 			this.selection(doubleArray);
+			this.selection(strArray);
 			endTime = System.currentTimeMillis();
 			duration = endTime - startTime;
 			printStats("selection", duration);
@@ -85,6 +83,7 @@ public class Sorts {
 			startTime = System.currentTimeMillis();
 			this.insertion(intArray);
 			this.insertion(doubleArray);
+			this.insertion(strArray);
 			endTime = System.currentTimeMillis();
 			duration = endTime - startTime;
 			printStats("insertion", duration);
@@ -93,6 +92,7 @@ public class Sorts {
 		startTime = System.currentTimeMillis();
 		this.comb(intArray);
 		this.comb(doubleArray);
+		this.comb(strArray);
 		endTime = System.currentTimeMillis();
 		duration= endTime - startTime;
 		printStats("comb", duration);
@@ -100,6 +100,7 @@ public class Sorts {
 		startTime = System.currentTimeMillis();
 		Arrays.sort(intArray.clone());
 		Arrays.sort(doubleArray.clone());
+		Arrays.sort(strArray.clone());
 		endTime = System.currentTimeMillis();
 		duration = endTime - startTime;
 		printStats("java's", duration);
@@ -659,16 +660,18 @@ public class Sorts {
 			if (!(toCheck[i].compareTo(toCheck[i+1]) <= 0)) {
 				System.err.println("Array found not in ascending order. Exiting.");
 				System.err.println("The index that failed was " + i);
-				printArray(toCheck);
+				System.out.flush();
+				print(toCheck.length);
+				printArray(toCheck, i);
 				System.exit(-1);
 			}
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void printArray(Comparable[] toPrint) {
-		for (int index = 0; index < toPrint.length; index++) {
-			System.out.print(toPrint[index] + ", ");
+	public void printArray(Comparable[] toPrint, int failIndex) {
+		for (int index = failIndex-10; index < failIndex+10 && index < toPrint.length; index++) {
+			System.out.println("index: " + index + ": " + toPrint[index]);
 		}
 	}
 
